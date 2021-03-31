@@ -1,15 +1,23 @@
-import driverUtils.DriverManager;
+import driverUtils.AbstractDriverManager;
 import driverUtils.DriverManagerFactory;
 import driverUtils.DriverType;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
 
 import java.util.concurrent.TimeUnit;
 
 public class BaseTest {
-    private DriverManager driverManager;
+    private static long startTime;
     private RemoteWebDriver driver;
+    private AbstractDriverManager driverManager;
+
+    @BeforeSuite
+    public void start() {
+        startTime = System.nanoTime();
+    }
 
     @BeforeMethod
     public void beforeSuite() {
@@ -17,7 +25,7 @@ public class BaseTest {
     }
 
     @AfterMethod
-    public void after() {
+    public void tearDown() throws InterruptedException {
         driverManager.quitDriver();
         //driverManager.stopService();
     }
@@ -31,7 +39,16 @@ public class BaseTest {
         return driver;
     }
 
+    @AfterClass
+    private void end() {
+        System.out.println("Finish time: " +
+                (System.nanoTime() - startTime) / 1000
+        );
+    }
+
     private void openURI(String uri) {
         driver.get(uri);
     }
+
+
 }

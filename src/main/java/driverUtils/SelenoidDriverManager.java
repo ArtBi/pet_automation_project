@@ -7,11 +7,11 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
-public class SelenoidDriverManager extends DriverManager {
+public class SelenoidDriverManager extends AbstractDriverManager {
 
     private static URL getSelenoidURL() {
         try {
-            return URI.create("http://192.168.1.154:4444/wd/hub").toURL();
+            return URI.create("http://192.168.50.41:4444/wd/hub").toURL();
         } catch (MalformedURLException e) {
             throw new RuntimeException("Cannot create Selenoid URL", e);
         }
@@ -31,18 +31,9 @@ public class SelenoidDriverManager extends DriverManager {
 
     }
 
-    @Override
-    public void stopService() {
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            public void run() {
-                quitDriver();
-            }
-        });
-
-    }
 
     @Override
-    public void createDriver() {
-        driver = new RemoteWebDriver(getSelenoidURL(), getCapabilities());
+    public RemoteWebDriver createDriver() {
+        return new RemoteWebDriver(getSelenoidURL(), getCapabilities());
     }
 }

@@ -3,10 +3,11 @@ package driverUtils;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.File;
 
-public class ChromeDriverManager extends DriverManager {
+public class ChromeDriverManager extends AbstractDriverManager {
     private ChromeDriverService chService;
 
     @Override
@@ -24,17 +25,12 @@ public class ChromeDriverManager extends DriverManager {
         }
     }
 
-    @Override
-    public void stopService() {
-        if (null != chService && chService.isRunning())
-            chService.stop();
-    }
 
     @Override
-    public void createDriver() {
+    public RemoteWebDriver createDriver() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("test-type");
-        driver = new ChromeDriver(chService, options);
+        return new ChromeDriver(chService, options);
     }
 
 }

@@ -1,20 +1,20 @@
 package driverUtils;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 public class DriverManagerFactory {
 
-    public static DriverManager getManager(DriverType type) {
-
-        DriverManager driverManager;
+    public static AbstractDriverManager getManager(DriverType type) {
 
         switch (type) {
             case SELENOID_CHROME:
-                driverManager = new SelenoidDriverManager();
-                break;
+                return new SelenoidDriverManager();
+            case LOCAL_CHROME:
+                return new ChromeDriverManager();
             default:
-                driverManager = new ChromeDriverManager();
-                break;
+                throw new NotImplementedException();
         }
-        return driverManager;
+
 
     }
 }
